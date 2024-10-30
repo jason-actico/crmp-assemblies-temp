@@ -1,0 +1,26 @@
+<assembly>
+    <id>crmp-add-on</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/resources/</directory>
+            <includes>
+                <include>./**/*</include>
+            </includes>
+            <outputDirectory/>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/classes</directory>
+            <includes>
+                <include>add-ons/**/*</include>
+            </includes>
+            <outputDirectory/>
+            <fileMode>644</fileMode>
+        </fileSet>
+    </fileSets>
+</assembly>
+

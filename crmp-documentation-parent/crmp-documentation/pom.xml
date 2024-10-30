@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>crmp-documentation</artifactId>
+	<description>Generates the release documentation from confluence page</description>
+	<inceptionYear>2017</inceptionYear>
+	<packaging>pom</packaging>
+
+    <parent>
+        <artifactId>crmp-documentation-parent</artifactId>
+        <groupId>com.actico.crmp.documentation</groupId>
+        <version>9.2.0-R01-SNAPSHOT</version>
+    </parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<executions>
+					<execution>
+						<id>internal doc</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://confluence.bfs-intra.net/plugins/servlet/scroll-office/api/public/1/export-sync?templateId=4355a8f0-1502-48c3-8576-bd05ecf27239&amp;pageId=77268269&amp;os_authType=basic</url>
+							<outputDirectory>target/documentation</outputDirectory>
+							<outputFileName>Internal.docx</outputFileName>
+							<overwrite>true</overwrite>
+							<skipCache>true</skipCache> 
+							<username>svc.cmgmt-confluence</username>
+							<password>V6oGNNTB2I3DDbL3DCfE</password>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>target/documentation/Internal.docx</file>
+									<type>docx</type>
+									<classifier>Internal</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

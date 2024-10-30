@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="de" xmlns="http://www.w3.org/1999/xhtml" lang="de"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>ACTICO Credit Risk Management Platform</title>
+    <style type="text/css">
+        a {
+        color:#4b4b4b;
+        text-decoration:underline;
+        }
+ 
+        a:hover {
+        color: #a3001c;
+        }
+
+        img { border:none }
+
+        body {
+        background: url("Pixelraster.png") no-repeat gray;
+        background: #cccccc;
+        margin-left: auto;
+        margin-right: auto;
+        width:980px;
+        font-family: verdana,arial;
+        color:#616365;
+        color:#4b4b4b;
+        font-size: 10.5px;
+        line-height: 1.5em;
+        }
+
+        h1 {
+        font-size: 21px;
+        }
+
+        h2 {
+        margin-top: 50px;
+        }
+
+        .downMenu {
+        text-decoration:none;
+        list-style-type:none;
+        float:left;
+        margin: 0px 0px 0px 0px;
+        padding:0 0 0 0;
+        }
+
+        #desk {
+        padding: 2em;
+        margin-top:30px;
+        width:1002px;
+        background:white;
+        /*-moz-box-shadow: 5px 5px 5px black;*/
+        box-shadow: -5px 5px 5px #9b9b9b;
+        /*border-radius: 5px;*/
+        margin-left:auto;
+        margin-right:auto;
+        font-size:11px;
+        font-family:verdana, arial;
+        }
+
+        #desk ul li {
+        list-style: none;
+        }
+
+        #logo {
+        right: 10px;
+        top:35px;
+        text-align: right;
+        float: right;
+        }
+
+
+        .txt-center {
+        text-align: center;
+        }
+
+        #footer-fm {
+        display:block;
+        padding-bottom:25px;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="wrapper">
+
+    <div id="desk">
+
+        <div id="logo">
+            <a href="https://confluence.bfs-intra.net/display/CMGMT/Credit+Risk+Management+Platform+Releases" target="_top"><img alt="Logo" src="./crmp-landing-page-${project.version}.png" width="150px"></a>
+        </div>
+        <h1 class="txt-center">Credit Risk Management Platform Version ${project.version}</h1>
+
+        <h2>CRMP</h2>
+
+        <h3>Modeling Environment (Modules for importing them in the Modeler and using them as a template for new projects)</h3>
+        <ul>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-rule-module-build/${crmp-rulemodels.version}/crmp-rule-module-build-${crmp-rulemodels.version}-core-model-sources.zip">
+                    CRMP Core Rule Model Sources
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-rule-module-build/${crmp-rulemodels.version}/crmp-rule-module-build-${crmp-rulemodels.version}-resources-model-sources.zip">
+                    CRMP Resources Rule Model Sources
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-rule-module-build/${crmp-rulemodels.version}/crmp-rule-module-build-${crmp-rulemodels.version}-integrationtest-model-sources.zip">
+                    CRMP Integrationtest Rule Model Sources
+                </a>
+            </li>
+        </ul>
+		
+		<h3>Documentation</h3>
+	    <ul>	
+			<li> <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/documentation/crmp-user-guide/${project.version}/crmp-user-guide-${project.version}.pdf">End User Guide</a> 
+			</li>
+		</ul>	
+			
+		<h3>Technical design/specification</h3>
+		The technical design/specification for CRMP is meant to be used as a template for projects using CRMP as a baseline. The documents are focusing more on the technical design of the application, not so much a business specification.
+	    <ul>	
+			<li> <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-specification/${project.version}/crmp-specification-${project.version}-assembly.zip">Specification assembly</a> (including Technical Design exported from Enterprise Architect, UI specification, Interface specification and a template for the scorcard specification)
+			</li>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-specification/${project.version}/crmp-specification-${project.version}-eap.zip">
+                    CRMP Technical Design (Enterprise Architect)
+                </a>
+            </li>
+       </ul>
+		
+		<h3>Database Setup</h3>
+		Scripts are automatically executed with Liquibase (like workplace)
+		<br>
+		
+		
+        <h3>Batch & Web application</h3>
+        <ul>
+			<li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-solution-webapp/${crmp-solution.version}/crmp-solution-webapp-${crmp-solution.version}.zip">
+                    Web application as .zip file (For Standalone deployment)
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-solution-webapp/${crmp-solution.version}/crmp-solution-webapp-${crmp-solution.version}.war">
+                    Web application as .war file
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-solution-batch-application/${crmp-solution.version}/crmp-solution-batch-application-${crmp-solution.version}.zip">
+                    Batch application as .zip file
+                </a>
+            </li>
+        </ul>				
+			
+        <h3>Assemblies </h3>
+        <ul>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-release-assembly/${project.version}/crmp-release-assembly-${project.version}-distribution.zip">
+                    For distribution to the client: Release.zip (includes to be deployed artifacts, db scripts, documentation, specification etc.)
+                </a>
+            </li>
+        </ul>	
+			
+		<h3>Libraries</h3>
+        <ul>
+        	<li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-libraries/${project.version}/crmp-libraries-${project.version}-model-hub.zip">
+                    CRMP Libraries (for import into Model Hub of customer)
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-libraries/${project.version}/crmp-libraries-${project.version}-maven.zip">
+                    Optional: CRMP Maven Artifacts (for import to the Maven repository of the customer) - only required if maven is used
+                </a>
+            </li>
+        </ul>
+
+		<h3>Docker image build script (ACTICO Internal Use Only)</h3>
+        <ul>			
+            <li>
+                <a target="_blank" href="https://stash.bfs-intra.net/projects/INFDOCK/repos/crmp/browse/Jenkinsfile?at=refs/heads/${project.version}">
+                    Jenkinsfile 
+                </a>
+                 (can be used as template to build a docker image based on the Financial Spreading Platform Webapp and the CRMP Database Scripts)
+            </li>
+        </ul>	
+
+        <h3>Documentation (ACTICO Internal Use Only)</h3>
+        <ul>
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/documentation/crmp-documentation/${project.version}/crmp-documentation-${project.version}-Internal.docx">
+                    CRMP Internal Documentation
+                </a>
+            </li>
+        </ul>
+        
+        <h3>Evaluation Bundle</h3>
+        <ul>			
+            <li>
+                <a target="_blank" href="https://repo.bfs-intra.net/artifactory/daf-solutions/com/actico/crmp/crmp-evaluation-bundle/${project.version}/crmp-evaluation-bundle-${project.version}.zip">
+                    CRMP Evaluation Bundle .zip
+                </a>
+                 (includes Model Hub, CRMP Solution Webapp and CRMP Batch Application, as well as the CRMP and Financial Spreading Add-ons) - FOR ACTICO INTERNAL USE ONLY!
+            </li>
+        </ul>		
+
+        <br>
+
+    </div>
+    <br>
+
+</div>
+
+
+
+
+<div id="footer-fm">
+    <p>© ACTICO GmbH</p>
+</div>
+
+
+
+
+</body></html>

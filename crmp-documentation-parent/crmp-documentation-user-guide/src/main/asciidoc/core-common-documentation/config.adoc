@@ -1,0 +1,6 @@
+:revnumber: @project.version@
+:toc: left
+:toclevels: 10
+
+// configure emtpy line
+:bl: pass:[ +]

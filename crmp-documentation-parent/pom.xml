@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>crmp-assemblies</artifactId>
+        <groupId>com.actico.crmp</groupId>
+        <version>9.2.0-R01-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>crmp-documentation-parent</artifactId>
+    <groupId>com.actico.crmp.documentation</groupId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>crmp-documentation-user-guide</module>       
+    </modules>
+
+	<profiles>
+		<profile>
+			<activation>
+				<property>
+					<name>enableDocumentation</name>
+				</property>
+			</activation>
+			<id>enableDocumentation</id>
+			<modules>
+				<module>crmp-documentation</module>
+			</modules>
+		</profile>
+	</profiles>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.actico.devop.maven</groupId>
+                    <artifactId>documentation-maven-plugin</artifactId>
+                    <version>2.0.2</version>
+                    <configuration>
+                        <outputs>
+                            <output>HTML_ASCIIDOC</output>
+                            <output>PDF</output>
+                        </outputs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins><!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.core.documentation</groupId>
+                                    <artifactId>core-documentation-common</artifactId>
+                                    <version>${version.core}</version>
+                                    <classifier>sources</classifier>
+                                    <outputDirectory>${project.basedir}/target/documentation/asciidoc/core-common-documentation</outputDirectory>
+                                    <includes>**/*.adoc</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+        </plugins>
+    </build>
+</project>

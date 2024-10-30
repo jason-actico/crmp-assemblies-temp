@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>crmp-evaluation-bundle</artifactId>
+  <packaging>pom</packaging>
+
+	<parent>
+		<groupId>com.actico.crmp</groupId>
+		<artifactId>crmp-assemblies</artifactId>
+		<version>9.2.0-R01-SNAPSHOT</version>
+	</parent>
+
+    <properties>
+	    <versionJdk>11.0.12.7.1</versionJdk>
+        <folderNameJdk>jdk11.0.12_7</folderNameJdk>
+		
+		<version.maven-antrun-plugin>3.0.0</version.maven-antrun-plugin>
+	
+        <modelHubZipFileName>model-hub-${evaluation-bundle-model-hub.version}.zip</modelHubZipFileName>
+        <crmpSolutionWebappZipFileName>financial-spreading-platform-webapp-${financial-spreading-platform.version}.zip</crmpSolutionWebappZipFileName>
+        <crmpBatchApplicationZipFileName>financial-spreading-platform-batch-application-${financial-spreading-platform.version}.zip</crmpBatchApplicationZipFileName>
+        <distroTmpMiscFolder>${distroTmp}/misc</distroTmpMiscFolder>
+        
+        <distroTmp>${project.build.directory}/distro-temp</distroTmp>
+        <distroTmpEvaluationFolder>${distroTmp}/evaluation</distroTmpEvaluationFolder>
+        <distroTmpInstallFolder>${distroTmp}/install</distroTmpInstallFolder>
+        <distroTmpWorkplaceModuleReleasesFolder>${distroTmpInstallFolder}/workplace-module-releases</distroTmpWorkplaceModuleReleasesFolder>
+		<distroTmpCRMPModuleReleasesFolder>${distroTmpInstallFolder}/crmp-module-releases</distroTmpCRMPModuleReleasesFolder>
+		<distroTmpSPRModuleReleasesFolder>${distroTmpInstallFolder}/spr-module-releases</distroTmpSPRModuleReleasesFolder>
+		<tmpDir>${project.build.directory}/temp</tmpDir>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+              		<!-- copy CRMP modules -->
+					<execution>
+                        <id>copy-crmp-modules</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.crmp</groupId>
+									<artifactId>crmp-rule-module-build</artifactId>
+                                    <version>${crmp-rulemodels.version}</version>
+                                    <classifier>model-releases</classifier>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${distroTmpCRMPModuleReleasesFolder}</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                            <includes>*/**</includes>
+                        </configuration>
+					</execution>
+					<!-- copy SPR Core module -->
+					<execution>
+                        <id>copy-spr-core-module</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.financial-spreading</groupId>
+									<artifactId>financial-spreading-rule-module-build</artifactId>
+                                    <version>${financial-spreading-rule-module-build.version}</version>
+                                    <classifier>core-model-release</classifier>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${distroTmpSPRModuleReleasesFolder}</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                            <includes>*/**</includes>
+                        </configuration>
+					</execution>
+
+					<!-- copy Workplace rule modules -->
+					<execution>
+						<id>copy-workplace-modules</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.actico.workplace</groupId>
+									<artifactId>modules</artifactId>
+									<classifier>workplace-modeling</classifier>
+									<type>zip</type>
+									<version>${workplace.version}</version>
+									<overWrite>true</overWrite>
+									<outputDirectory>${distroTmpWorkplaceModuleReleasesFolder}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.actico.workplace</groupId>
+									<artifactId>modules</artifactId>
+									<classifier>workplace-commons</classifier>
+									<type>zip</type>
+									<version>${workplace.version}</version>
+									<overWrite>true</overWrite>
+									<outputDirectory>${distroTmpWorkplaceModuleReleasesFolder}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.actico.workplace</groupId>
+									<artifactId>modules</artifactId>
+									<classifier>workplace-standard</classifier>
+									<type>zip</type>
+									<version>${workplace.version}</version>
+									<overWrite>true</overWrite>
+									<outputDirectory>${distroTmpWorkplaceModuleReleasesFolder}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+
+					<!-- copy CRMP Solution Webapp -->
+					<execution>
+                        <id>copy-crmp-solution-webapp</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.financial-spreading</groupId>
+									<artifactId>financial-spreading-platform-webapp</artifactId>
+									<type>zip</type>
+									<version>${financial-spreading-platform.version}</version>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${distroTmpInstallFolder}</outputDirectory>
+					            </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+					
+					<!-- copy CRMP Add-ons -->
+					<execution>
+                        <id>copy-crmp-add-ons</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.crmp</groupId>
+									<artifactId>crmp-add-ons</artifactId>
+									<type>zip</type>
+									<version>${project.version}</version>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${distroTmpMiscFolder}</outputDirectory>
+					            </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <!-- if you are receiving m2eclipse errors in regards to this execution you can ignore them -->
+								<execution>
+                        <id>copy-crmp-dbscripts</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.crmp</groupId>
+									<artifactId>crmp-dbmodel</artifactId>
+									<type>jar</type>
+									<version>${project.version}</version>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${distroTmpMiscFolder}</outputDirectory>
+					            </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+					
+					<!-- copy CRMP Batch Webapp -->
+					<execution>
+                        <id>copy-crmp-batch-webapp</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.financial-spreading</groupId>
+									<artifactId>financial-spreading-platform-batch-application</artifactId>
+									<type>zip</type>
+									<version>${financial-spreading-platform.version}</version>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${distroTmpInstallFolder}</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+			        
+                    <!-- Unpack JDK/Model Hub archives. -->
+                    <execution>
+                        <id>unpack</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>java.jdk</groupId>
+                                    <artifactId>corretto-openjdk</artifactId>
+                                    <classifier>windows-x64</classifier>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.actico.model-hub</groupId>
+                                    <artifactId>platform-model-hub</artifactId>
+                                    <classifier>distro</classifier>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${tmpDir}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-cli</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.actico.cli</groupId>
+                                    <artifactId>cli</artifactId>
+                                    <outputDirectory>${project.basedir}/target/cli</outputDirectory>
+                                    <destFileName>cli.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>effective-settings</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                import java.io.StringWriter;
+                                import org.apache.maven.settings.io.xpp3.SettingsXpp3Writer;
+
+                                StringWriter writer = new StringWriter();
+                                SettingsXpp3Writer settingsWriter = new SettingsXpp3Writer();
+                                settingsWriter.write(writer, settings);
+
+                                // convert effective settings to a base64 encoded string
+                                // and store it in the maven property 'effective_settings'
+                                String s = Base64.getEncoder().encodeToString(writer.toString().getBytes("UTF-8"))
+                                project.properties.effective_settings = s;
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${version.maven-antrun-plugin}</version>
+                <executions>
+                   <execution>
+                        <id>prepare-libraries-for-model-hub</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="Prepare libraries for Model Hub" />
+
+                                <!--  Copy rules runtime and db-integrator to repository, incl. transitive dependencies. -->
+                                <java jar="${project.basedir}/target/cli/cli.jar" fork="true" failonerror="true">
+                                    <arg line="--license-directory src/license"/>
+                                    <arg value="add-maven-libraries"/>
+                                    <arg line="--artifact com.actico.rules.core.runtime:rules-runtime-api:${version.platform.core}"/>
+                                    <arg line="--repository target/repository"/>
+                                    <arg line="--maven-settings ${effective_settings}"/>
+                                </java>
+                                <java jar="${project.basedir}/target/cli/cli.jar" fork="true" failonerror="true">
+                                    <arg line="--license-directory src/license"/>
+                                    <arg value="add-maven-libraries"/>
+                                    <arg line="--artifact com.actico.rules.core.runtime:rules-db-integrator:${version.platform.core}"/>
+                                    <arg line="--repository target/repository"/>
+                                    <arg line="--maven-settings ${effective_settings}"/>
+                                </java>
+                                <mkdir dir="${distroTmpInstallFolder}/rules-module-releases" />
+                                <zip destfile="${distroTmpInstallFolder}/rules-module-releases/actico.rules-runtime-library-repo.zip"
+                                     basedir="target/repository"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <!-- Prepare file system for the assemblage in 'assembly-evaluation-bundle.xml'. -->
+                        <id>prepare-distro-dir</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Clean up / set up directory structure. -->
+                                <mkdir dir="${distroTmpEvaluationFolder}/config/license" />
+
+                                <!-- Copy resources (including the needed replacements). -->
+                                <copy todir="${distroTmp}">
+                                    <fileset dir="${project.basedir}/target/classes">
+                                        <include name="**/*" />
+                                    </fileset>
+                                </copy>                                
+                   
+                                <!-- JDK -->
+                                <move file="${tmpDir}/${folderNameJdk}" toFile="${distroTmpEvaluationFolder}/java" includeemptydirs="true" />
+
+								<!-- CLI -->
+                                <copy file="${project.basedir}/target/cli/cli.jar" toDir="${distroTmpEvaluationFolder}/lib" />
+								
+                                <!-- Model Hub -->
+                                <move file="${tmpDir}/install/model-hub-application.zip" toFile="${distroTmpInstallFolder}/${modelHubZipFileName}" />
+                    		
+                    			<delete dir="${tmpDir}" />
+                    		
+                    		 </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>assert-distro-dir-contents</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <path id="installFolder">
+                                    <fileset dir="${distroTmpInstallFolder}" includes="**/*" />
+                                </path>
+                                <pathconvert pathsep="${line.separator}|   |-- " property="installFolderFormatted" refid="installFolder" />
+                                <echo>Checking install folder...</echo>
+                                <echo>${installFolderFormatted}</echo>
+                                <fail message="###### Assertion failed: Expected exactly '3' files in '${distroTmpInstallFolder}', but the assertion failed! ${distroTmpInstallFolder}/${modelHubZipFileName}, ${distroTmpInstallFolder}/${crmpSolutionWebappZipFileName}, ${distroTmpInstallFolder}/${crmpBatchApplicationZipFileName} ">
+                                    <condition>
+                                        <or>
+                                            <not>
+                                                <resourcecount count="3"> 
+                                                    <fileset dir="${distroTmpInstallFolder}" includes="*" />
+                                                </resourcecount>
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpInstallFolder}/${modelHubZipFileName}" />
+                                            </not>
+                                    		<not>
+                                                <available file="${distroTmpInstallFolder}/${crmpSolutionWebappZipFileName}" />
+                                            </not>
+                                          	<not>
+                                                <available file="${distroTmpInstallFolder}/${crmpBatchApplicationZipFileName}" />
+                                            </not>
+                                        </or>
+                                    </condition>
+                                </fail>
+								
+								<path id="crmpModuleReleasesFolder">
+                                    <fileset dir="${distroTmpCRMPModuleReleasesFolder}" includes="**/*" />
+                                </path>
+                                <pathconvert pathsep="${line.separator}|   |-- " property="crmpModuleReleasesFolderFormatted" refid="crmpModuleReleasesFolder" />
+                                <echo>Checking CRMP releases folder...</echo>
+                                <echo>${crmpModuleReleasesFolderFormatted}</echo>
+                                <fail message="###### Assertion failed: Expected 3 file in '${distroTmpCRMPModuleReleasesFolder}', but the assertion failed!">
+                                    <condition>
+                                        <or>
+                                            <not>
+                                                <resourcecount count="3">
+                                                    <fileset dir="${distroTmpCRMPModuleReleasesFolder}" includes="*" />
+                                                </resourcecount>
+                                            </not>
+                                        </or>
+                                    </condition>
+                                </fail>
+                                
+                                <path id="sprModuleReleasesFolder">
+                                    <fileset dir="${distroTmpSPRModuleReleasesFolder}" includes="**/*" />
+                                </path>
+                                <pathconvert pathsep="${line.separator}|   |-- " property="sprModuleReleasesFolderFormatted" refid="sprModuleReleasesFolder" />
+                                <echo>Checking SPR releases folder...</echo>
+                                <echo>${sprModuleReleasesFolderFormatted}</echo>
+                                <fail message="###### Assertion failed: Expected 1 file in '${distroTmpSPRModuleReleasesFolder}', but the assertion failed!">
+                                    <condition>
+                                        <or>
+                                            <not>
+                                                <resourcecount count="1">
+                                                    <fileset dir="${distroTmpSPRModuleReleasesFolder}" includes="*" />
+                                                </resourcecount>
+                                            </not>
+                                        </or>
+                                    </condition>
+                                </fail>
+
+                                <path id="evaluationFolder">
+                                    <fileset dir="${distroTmpEvaluationFolder}" includes="**/*" />
+                                </path>
+                                <pathconvert pathsep="${line.separator}|   |-- " property="evaluationFolderFormatted" refid="evaluationFolder" />
+                                <echo>Checking evaluation folder...</echo>
+                                <echo>${evaluationFolderFormatted}</echo>
+                                <fail message="###### Assertion failed: Expected exactly '8' files in '${distroTmpEvaluationFolder}', but the assertion failed!">
+                                    <condition>
+                                        <or>
+                                            <not>
+                                                <resourcecount count="8">
+                                                    <fileset dir="${distroTmpEvaluationFolder}" includes="*" />
+                                                </resourcecount>
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpEvaluationFolder}/1_start_model-hub.bat" />
+                                            </not>
+                                             <not>
+                                                <available file="${distroTmpEvaluationFolder}/2_start_rule-module-deployment.bat" />
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpEvaluationFolder}/3_start_crmp-solution-webapp.bat" />
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpEvaluationFolder}/4_start_crmp-solution-webapp-integrationtest.bat" />
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpEvaluationFolder}/5_start_crmp-solution-batch-application.bat" />
+                                            </not>
+                                             <not>
+                                                <available file="${distroTmpEvaluationFolder}/6_start_crmp-solution-batch-application-integrationtest.bat" />
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpEvaluationFolder}/stop_servers.bat" />
+                                            </not>
+                                             <not>
+                                                <available file="${distroTmpEvaluationFolder}/readme.md" />
+                                            </not>
+                                        </or>
+                                    </condition>
+                                </fail>
+                                <fail message="###### Assertion failed: Expected exactly '1' file in '${distroTmpEvaluationFolder}/config', but the assertion failed!">
+                                    <condition>
+                                        <or>
+                                            <not>
+                                                <resourcecount count="1">
+                                                    <fileset dir="${distroTmpEvaluationFolder}/config" includes="*" />
+                                                </resourcecount>
+                                            </not>
+                                            <not>
+                                                <available file="${distroTmpEvaluationFolder}/config/README.txt" />
+                                            </not>
+                                        </or>
+                                    </condition>
+                                </fail>
+                                <fail message="###### Assertion failed: Expected license folder in '${distroTmpEvaluationFolder}/config/license', but it is missing!">
+                                    <condition>
+                                        <not>
+                                            <available type="dir" file="${distroTmpEvaluationFolder}/config/license" />
+                                        </not>
+                                    </condition>
+                                </fail>
+                                <fail message="###### Assertion failed: Expected JDK folder in '${distroTmpEvaluationFolder}/java', but it is missing!">
+                                    <condition>
+                                        <not>
+                                            <available type="dir" file="${distroTmpEvaluationFolder}/java" />
+                                        </not>
+                                    </condition>
+                                </fail>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+            	<artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                  <id>copy-resources</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                     <goal>copy-resources</goal>
+                  </goals>
+                  <configuration>
+                     <resources>
+                     	<resource>
+                			<directory>src/main/resources</directory>
+                			<filtering>true</filtering>
+            			</resource>
+            			</resources>
+            		 <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                  </configuration>
+               </execution> 
+               </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package evaluation bundle</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-evaluation-bundle.xml</descriptor>
+                            </descriptors>
+                            <finalName>crmp-evaluation-bundle</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins> 
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>java.jdk</groupId>
+            <artifactId>corretto-openjdk</artifactId>
+            <classifier>windows-x64</classifier>
+            <type>zip</type>
+            <version>${versionJdk}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.actico.model-hub</groupId>
+            <artifactId>platform-model-hub</artifactId>
+            <classifier>distro</classifier>
+            <type>zip</type>
+            <version>${evaluation-bundle-model-hub.version}</version>
+        </dependency>
+        <dependency>
+            <!-- Required to build with CLI. -->
+            <groupId>com.actico.cli</groupId>
+            <artifactId>cli</artifactId>
+            <version>${cli.version}</version>
+        </dependency>
+        <!--  CRMP dependencies -->
+			<dependency>
+            <groupId>com.actico.financial-spreading</groupId>
+			<artifactId>financial-spreading-platform-batch-application</artifactId>
+            <type>zip</type>
+            <version>${financial-spreading-platform.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>com.actico.crmp</groupId>
+            <artifactId>crmp-add-ons</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-dbmodel</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+        <dependency>
+        	<groupId>com.actico.workplace</groupId>
+        	<artifactId>modules</artifactId>
+  			<classifier>workplace-modeling</classifier>
+  			<version>${workplace.version}</version>
+  			<type>zip</type>
+        </dependency>
+         <dependency>
+        	<groupId>com.actico.workplace</groupId>
+        	<artifactId>modules</artifactId>
+  			<classifier>workplace-commons</classifier>
+  			<version>${workplace.version}</version>
+  			<type>zip</type>
+        </dependency>
+        <dependency>
+        	<groupId>com.actico.workplace</groupId>
+        	<artifactId>modules</artifactId>
+  			<classifier>workplace-standard</classifier>
+  			<version>${workplace.version}</version>
+  			<type>zip</type>
+        </dependency>
+    </dependencies>
+</project>

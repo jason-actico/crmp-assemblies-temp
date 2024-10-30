@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.actico.crmp</groupId>
+	<artifactId>crmp-assemblies</artifactId>
+	<version>9.2.0-R01-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>crmp-dbmodel</module>
+		<module>crmp-add-ons</module>
+		<module>crmp-rule-dependencies</module>
+		<module>crmp-libraries</module>
+		<module>crmp-landing-page</module>
+		<module>crmp-specification</module>
+		<module>crmp-documentation-parent</module>		
+		<module>crmp-release-assembly</module>
+		<module>crmp-evaluation-bundle</module>
+	</modules>
+
+	<scm>
+		<connection>scm:svn:https://svn.bfs-intra.net/scm/svn/CM/crrp-solution-development/crmp-assemblies/trunk</connection>
+		<developerConnection>scm:svn:https://svn.bfs-intra.net/scm/svn/CM/crrp-solution-development/crmp-assemblies/trunk</developerConnection>
+		<url>https://svn.bfs-intra.net/scm/svn/CM/crrp-solution-development/crmp-assemblies/trunk</url>
+	</scm>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>https://repo.bfs-intra.net/artifactory/daf-solutions-releases</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>snapshots</id>
+			<url>https://repo.bfs-intra.net/artifactory/daf-solutions-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Disable javadoc as it causes issues during release -->
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+		
+	
+		<!-- The version of the crmp rule modules (e.g. for download of resources module containing the dbmodel) -->
+		<crmp-rulemodels.version>9.1.23-R04-SNAPSHOT</crmp-rulemodels.version>
+	
+		<!-- Version of Platform CLI required for the maven artifacts build (should be in sync with the Model Hub version) -->
+    	<cli.version>9.1.30</cli.version>
+     	<!-- Version the local Model Hub used in evaluation bundle. Must be compatible with used CLI version -->
+    	<evaluation-bundle-model-hub.version>${cli.version}</evaluation-bundle-model-hub.version>
+		<!-- Workaround for ACTP-13706: use the version that is included in the distribution.zip of the referenced model hub version -->
+		<version.platform.core>9.1.68</version.platform.core>		
+		
+		
+    	<!-- Necessary for the workplace rule models used in evaluation bundle. -->		
+		<workplace.version>9.2.2</workplace.version>
+		<!-- The version number of the spr core module in the modeler itself -->	
+		<financial-spreading-rule-module.version>9.1.23-r07</financial-spreading-rule-module.version>
+		<!-- the version number of the maven project crmp-rule-module-build  -->
+		<financial-spreading-rule-module-build.version>9.1.23-R07</financial-spreading-rule-module-build.version>
+		<financial-spreading-platform.version>9.2.2-R01</financial-spreading-platform.version>
+		<financial-spreading-core.version>9.2.2-R01</financial-spreading-core.version>
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			
+			<!-- ============================================ -->
+			<!-- Multi Module dependencies -->
+			<!-- ============================================ -->
+
+			<!-- crmp-add-ons - required for all-in-one.zip -->
+			<dependency>
+				<groupId>com.actico.crmp</groupId>
+				<artifactId>crmp-add-ons</artifactId>
+				<version>${project.version}</version>
+				<type>zip</type>
+			</dependency>
+			
+			<!-- crmp-dbmodel - required for all-in-one.zip -->
+			<dependency>
+				<groupId>com.actico.crmp</groupId>
+				<artifactId>crmp-dbmodel</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			
+			<!-- crmp-libraries - required for release assembly -->
+			<dependency>
+				<groupId>com.actico.crmp</groupId>
+				<artifactId>crmp-libraries</artifactId>
+				<type>zip</type>
+				<classifier>distribution</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.actico.crmp</groupId>
+				<artifactId>crmp-libraries</artifactId>
+				<type>zip</type>
+				<classifier>model-hub</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+				<plugin>
+					<!--This plugin's configuration is used to store Eclipse m2e settings 
+						only. It has no influence on the Maven build itself. -->
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>[2.8,)</versionRange>
+										<goals>
+											<goal>unpack</goal>
+											<goal>unpack-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

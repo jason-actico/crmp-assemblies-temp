@@ -1,0 +1,14 @@
+-----BEGIN SIGNATURE-----
+al+zl5Fb0vl8RgeBKvE/8twFT7s4/C8h0BFXAYbNJOZ0H28Ur1fajmwwl67JX/T4YreaXkCYNlde
+aeBGILKIFwXIArsdTeTWqXBqeeOusxGZQ9FwvP6ivVnW+xbUSS879U6pN6ZPv1a9FnKBLS8G458r
+VAUTn1i56sNyuxgkZYU=
+------END SIGNATURE------
+validdate    = UNLIMITED
+features     = Platform CLI
+creationdate = 26.02.2021
+licensetype  = full
+majorversion = 9
+plugins      = com.actico.platform.cli
+name         = Unlimited License CLI 9
+company      = ACTICO GmbH
+email        = rainer.faller@actico.com

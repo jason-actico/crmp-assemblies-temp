@@ -1,0 +1,2 @@
+
+h2.check.query=SELECT 1 / count(*) FROM IM_USER where name ='Integrationtest';

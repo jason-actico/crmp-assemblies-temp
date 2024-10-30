@@ -1,0 +1,5 @@
+${product}
+
+Copyright (c) ${year} ${company}
+
+All rights reserved.

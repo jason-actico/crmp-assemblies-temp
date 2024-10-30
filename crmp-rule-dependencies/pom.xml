@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.actico.crmp</groupId>
+		<artifactId>crmp-assemblies</artifactId>
+		<version>9.2.0-R01-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>crmp-rule-dependencies</artifactId>
+	<packaging>jar</packaging>
+	
+	<description>Maven dependencies required for the CRMP rule projects</description>
+	<inceptionYear>2021</inceptionYear>
+
+	<dependencies>
+		
+		<!-- 
+		************************************************************** 
+		* Financial Spreading Rule Dependencies
+		************************************************************** 
+		-->
+		<dependency>
+			<groupId>com.actico.financial-spreading</groupId>
+			<artifactId>financial-spreading-rule-dependencies</artifactId>
+			<version>${financial-spreading-core.version}</version>
+		</dependency>
+		
+		<!-- 
+		************************************************************** 
+		* CBG Rule Dependencies
+		************************************************************** 
+		-->
+		
+	<!-- CRMP-1139 / upgrade to workplae 9.1.18 - removed cbg dependency as cbg is not available in 9.1.18 yet and keeping it causes conflicts -->
+	<!--
+		<dependency>
+			<groupId>com.actico.cbg.plugins</groupId>
+			<artifactId>cbg-rule-dependencies</artifactId>
+		</dependency>
+	-->
+	</dependencies>
+</project>

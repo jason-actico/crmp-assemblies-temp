@@ -1,0 +1,3 @@
+:pd-rating:  PD Rating
+[[pd-pdRating,{pd-rating}]]
+= {pd-rating}

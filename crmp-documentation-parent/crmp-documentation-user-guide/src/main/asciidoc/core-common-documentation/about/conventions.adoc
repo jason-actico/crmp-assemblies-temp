@@ -1,0 +1,15 @@
+=== Conventions
+
+The following text conventions are used in this document:
+
+.Conventions
+|===
+|Convention |Meaning
+
+|*boldface*
+|Used for elements, labels and terms from the user interface.
+
+|`monospace`
+|Used for filenames or URLs.
+|===
+

@@ -1,0 +1,366 @@
+:financialStatement: <<financial-statement#financialStatement>>
+:pdRating: <<pd-rating#pd-pdRating>>
+
+
+:cm-clientDataManagement: Client & Facility Data Management
+[[cm-clientDataManagement,{cm-clientDataManagement}]]
+= {cm-clientDataManagement}
+
+The CLI Module supports the import of existing client master data from third party applications, e.g. core banking / client management systems. All data can also be entered manually using an intuitive web-based front-end. This includes both master data for clients as well as relationship data for managing groups of related companies.
+
+In addition, facility and collateral data can be fed into the system to establish related risk rating and credit origination processes. The Client Management Module is seamlessly integrated with the platform’s other credit risk management modules. This includes the financial spreading and calculation of a risk rating on both an individual company level and an aggregated group level.
+
+image::Client_FacilityManagement/100_OverviewScreen.png[{width75}, align = center]
+
+:manualClientCreation: Manual Client Creation
+== {manualClientCreation} 
+Clients and group of clients can be manually created in the system. 
+
+1. Open menu *Client - Create*
++
+image::Client_FacilityManagement/200_CreateMenu.png[{width50}, align = center]
+
+2. On the screen enter a client name and optionally an external client ID. Entering an external client ID makes sense if the client originates from an external system which is not integrated with the CRMP on a technical level. 
++
+image::Client_FacilityManagement/300_CreateClientStart.png[{width75},align = center]
+
+3. Hit *Enter* or press *Save*
+4. The client details are displayed, allowing to enter additional client specific data 
++
+* *Overview Section*
++
+Displays the automatically generated internal client id and other information about the client. Data in this section can not be changed and is read-only.
+* *Client Details*
++
+Enter additional information about the clients industry sector, the founding date and the external reference ID of the client.  
+* *Client Address*
++
+Provide address details for the client.
+* *Comment*
++
+Insert comments further describing the client.
++
+image::Client_FacilityManagement/400_CreateClientDetails.png[{width75},align = center]
+
+5. Press *Save* to store the provided information
++
+A confirmation message displaying the client ID and current revision number is displayed. 
+
+image::Client_FacilityManagement/500_CreateClientSaveSuccess.png[{width75},align = center]
+
+Further tabs can be completed within the process to complete the client's profile:
+
+* *Financial Statement*: collect, analyze and store financial statements, including but not limited to balance sheet, income statement and cashflow statements. See section {financialStatement}
+* *PD Rating*: create a risk rating for the client. Please refer to the Rating documentation provided by ACTICO for further information
+* *Groups*: manage the group membership of the created client. See section <<cm-updateGroupMaster>>
+* *Attachments*: upload additional information about the client. See section <<cm-manageAttachments>>
+* *Activity history*: review the client's history and look at the revisions. See section <<cm-clientHistory>>
+
+WARNING: Clients that are manually created cannot be connected to clients which have been imported.
+If a manually created client is supposed to be connected to a group, the group structure and each client in the group has to be maintained manually. 
+
+:clientWorklist: Client Worklist
+== {clientWorklist} 
+The client worklist allows to quickly filter for a list of clients based on a predefined set of filters *Worklist Views*.
+
+1. Open menu *Client - Worklist*
++
+image::Client_FacilityManagement/600_MenuClientWorklist.png[{width50},align = center]
+
+2. Select or search for a *Worklist View* by pressing on the provided dropdown
++
+image::Client_FacilityManagement/700_SelectWorklistView.png[{width75},align = center]
+
+3. A result table specific to the defined *Worklist View* is visualized
++
+image::Client_FacilityManagement/800_ResultTableWorklistView.png[{width75},align=center]
+
+4. Click on the *Internal Client ID* to open the clients details page
++
+image::Client_FacilityManagement/900_ClientDetailView.png[{width75},align=center]
+
+
+:importClientExternalSource: Import a client from an external source
+==  {importClientExternalSource}
+Instead of manually creating a client in the system it is also possible to import it from 3rd party systems using a configurable interface. Once the interface is set up, clients and client relationships can be imported.
+
+Typical sources of master data records are:
+
+* SAP
+* Salesforce
+* Master Data Database
+
+=== Automatic Update
+CRMP allows third party applications to automatically create and update client master data and client relationship (group) information using a set of webservices provided by the system. See the technical design document for more information. 
+
+
+=== Manual import of client and group master data
+1. Open Menu *Client - Import from External System*
++
+image::Client_FacilityManagement/1100_MenuImportClient.png[{width50},align=center]
+
+2. Search for the client record in the third party system by client name or External Client ID
++
+NOTE: Search capabilities and criteria are dependent on the connected third party system
++
+image::Client_FacilityManagement/1200_ImportClientSearch.png[{width75},align=center]
+
+3. Navigate through the provided search results and press *Select* to import the select client and client group structure
++
+A duplicate check against the provided external Client ID is performed. If the client already exists in the CRMO the coresponding client is shown and a notification message is displayed.
++
+image::Client_FacilityManagement/1300_ImportClientSuccess.png[{width75},align=center]
+
+4. Review the imported client information
+
+:cm-manual-update-external-client: Manual update of client and group master data from external sources
+[[cm-manualUpdateExternalClient, {cm-manual-update-external-client}]]
+=== {cm-manual-update-external-client}
+To ensure working on an up-to-date master data record, CRMP provides the capability to manually refresh the client master data and group records from external data sources.
+
+1. Search for an existing client as described in section <<cm-searchClient>>
+2. In the overview section press the button *Refresh Client Data from External System*
++
+image::Client_FacilityManagement/1400_UpdateExtClientManually.png[{width75},align=center]
+
+3. Review status message
++
+The status lists the updated client and all affected group members.
++
+image::Client_FacilityManagement/1500_UpdateExtClientManuallyStatus.png[{width75},align=center]
+
+
+[NOTE]
+====
+Data retrieved from third party tools cannot be changed within the CRMP to avoid data synchronization issues.
+
+image::Client_FacilityManagement/1000_ImportedClientDetailView.png[{width50},align=center]
+====
+
+=== Maintain client and group master data
+In CRMP, the client is considered the starting point for all business processes (e.g. financial spreading or risk rating).
+
+The identification and maintenance of client information therefore is a crucial part and can be divided into the following steps:
+
+* Search and select clients
+* Maintain client and group master data
+* View client history
+
+CRMP supports those activities as described in the following sections.  
+
+:cm-search-client: Search clients
+[[cm-searchClient,{cm-search-client}]]
+==== {cm-search-client}
+1. Open Menu *Client - Search*
++
+image::Client_FacilityManagement/1600_SearchClientMenu.png[{width50},align=center]
+2. Enter search criteria and hit enter or press *Search*
++
+The entered search criteria will be AND combined. This means that the returned search criteria have to match all provided input.
++
+image::Client_FacilityManagement/1700_SearchClientResults.png[{width75},align=center]
++
+NOTE: Text fields such as name, street or postcode allow usage of * as a wildcard at the beginning or the end of the search term.
++
+3. To export the search results, press button *Export Results*. An Excel file containing the data visible in the *Search Results* section is made available for download
+4. Click on the *Internal Client ID* to open the client details
+
+=== Update client master data
+1. To update client master data open the client details, as described in <<cm-searchClient>>
+2. The client details screen allows modification of all non read-only fields
++
+image::Client_FacilityManagement/1800_UpdateClientOverview.png[{width75},align=center]
+
++
+3. Press *Save* to store the updated information
++
+When saved, a status notification including the current revision of the client master data record is shown.
++
+image::Client_FacilityManagement/1900_UpdateClientSuccess.png[{width75},align=center]
+
+
+WARNING: Imported attributes of client master data are read-only and have to be updated in the source system. Please refer to section <<cm-manualUpdateExternalClient>> on how to trigger an update of the client master data record.
+
+:cm-update-group-master: Update group master data
+[[cm-updateGroupMaster,{cm-update-group-master}]]
+=== {cm-update-group-master}
+1. To update a client's group master data open the client details of the client that should be used as the parent (see <<cm-searchClient>>)
+2. Switch to tab *Groups*
+3. Change group relationship as described in the sections below
+
+==== Add a new relationship
+1. In section *Add additional Group Members* search for the client(s), you want to add to the group and Press *Search*. All results are shown in the section below. 
++
+NOTE: The selected parent client is automatically excluded from the search results, as no relationship cycles are allowed.
++
+image::Client_FacilityManagement/2100_AddGroupMemberSearchResult.png[{width75},align=center]
++
+2. In section *Add Clients* select the appropriate *Group Type* from the drop down provided to define the type of relationship between the initially selected client (information provided in the overview section) and the clients to be added
++
+Per default, CRMP offer two types of relationships, so called group types:
++
+* Borrower Unit
+* Risk Unit 
++
+NOTE: Two clients can be connected only once per Group Type
+3. In the result table, select the required clients that should be added to the group with the selected group type. It is possible to add multiple clients at once
++
+image::Client_FacilityManagement/2200_AddGroupMemberSelectType.png[{width75},align=center]
++
+4. Press *Add Selected Client(s) to Group* to create the relationship 
++
+image::Client_FacilityManagement/2300_AddGroupMemberAdded.png[{width75},align=center]
++
+5. Press *Save* to store the updated data
+
+The relationship amongst the group members is updated. You can verify this by checking the group tab of the added child element(s).
+
+image::Client_FacilityManagement/2400_AddGroupMemberValidation.png[{width75},align=center]
+
+The currently displayed client is highlighted in bold writing.
+
+
+
+=== Remove an existing relationship
+1. To remove a group relationship, open the client details of the group parent (see <<cm-searchClient>>)
+2. Switch to tab *Groups*
++
+image::Client_FacilityManagement/2500_RemoveGroupMemberOverview.png[{width75},align=center]
++
+3. In the *Group Structure and Members* section, select the *Group Type* you want to remove a relationship of
+4. Identify the client that is to be removed from the group structure and press the button *Remove*
++
+image::Client_FacilityManagement/2600_RemoveGroupMemberRemoveButton.png[{width75},align=center]
++
+5. The relationship between the parent and client is removed and the update is persisted
+
+WARNING: The relationship is removed immediately. No further confirmation is required
+
+:cm-client-history: View client history
+[[cm-clientHistory, {cm-client-history}]]
+== {cm-client-history} 
+In the *Activity History* tab of a client all revisions of the client are visible. You can also review the client master data of a selected revision in read only.
+
+This screen is particularly useful to get information about the latest updates and to verify if changes in the address or other client specific master data have been reflected.
+
+The following activities are logged:
+
+* Creation of client
+* Changes of additional client details
+* Changes of group membership data
+* Creation/Update/Deletion of Financial Statements
+* Creation/Update/Deletion of Ratings
+
+1. To view the client's activity history, open the client details (see <<cm-searchClient>>)
+2. Open tab *Activity History*
++
+image::Client_FacilityManagement/2700_ClientHistoryOverview.png[{width75},align=center]
+
+In section *Activity History* you can see the list of the client revisions with information about:
+
+* *Document Revision*: ID of the revision increments by one per revision
+* *Activity*: the performed type of change leading to the new revision
+* *User*: the username having performed the activity
+* *Change Date*: date when the new revision was created
+
+To review a revision in read only mode click on a *Document Revision ID*. You will see the client details with a notification showing the current revision in review.
+
+image::Client_FacilityManagement/2800_ClientHistoryNotification.png[{width75},align=center]
+
+[NOTE]
+====
+The following data is visible in the revision review:
+
+- *Additional Client Data*
+- *Attachments*
+==== 
+
+[WARNING]
+====
+Access to the activity history needs to be activated by the administrator
+
+image::Client_FacilityManagement/2900_ClientHistoryRequiredPermissions.png[{width50},align=center]
+
+====
+
+
+=== Capture new financial statement
+The management of financial statements is a core functionality of CRMP. 
+
+1. To create a new financial statement or review existing ones, open the client details as described in <<cm-searchClient>>.
+2. Switch to tab *Financial Statement* and follow the instructions as described in section {financialStatement}
++
+image::Client_FacilityManagement/3000_FinancialStatementOverview.png[{width75},align=center]
+
+=== Create new rating
+CRMP allows to conveniently navigate to an existing rating or to create a new one.
+
+1. To review an existing or to create a new rating for a client, open the client details (see <<cm-searchClient>>)
+2. Select tab *PD Rating*
++
+image::Client_FacilityManagement/3100_RatingOverview.png[{width75},align=center]
+
+Please refer to the risk rating guide for further details on how to create, review and print ratings.
+
+
+:cm-manage-attachments: Manage Attachments
+[[cm-manageAttachments,{cm-manage-attachments}]]
+== {cm-manage-attachments}
+Background information like organizational charts or other client specific information can be stored in the CRMP as attachments.  
+
+1. To manage attachments of a client open the client details (see <<cm-searchClient>>)
+2. Open tab *Attachments*
++
+image::Client_FacilityManagement/3200_AttachmentsOverview.png[{width75},align=center]
++
+3. You can now see the current set of available attachments for the selected client
+
+:cm-attachments-upload: Upload new files
+[[cm-attachmentsUpload, {cm-attachments-upload}]]
+=== {cm-attachments-upload}
+1. To upload a new file, open the *Attachments* tab
+2. Press *Choose File*. A selection screen to pick a file is opened. 
+3. Select a file and press *Open*
+4. Enter a description and press *Upload*
+5. The file is uploaded and listed in the table *Attachments* with information about the file name, the given description, file size and who uploaded the file at what point in time. Storage of multiple files with the same name is possible.
++
+image::Client_FacilityManagement/3300_AttachmentsUpload.png[{width75},align=center]
+
+[NOTE]
+====
+The upload of files of the following types is blocked: exe, bat, sh, cmd, ps1. 
+
+The file size is limited by the administrator in the section *File Upload*
+
+image::Client_FacilityManagement/3600_AttachmentsFileSize.png[{width75},align=center]
+====
+
+:cm-attachments-download-remove: Download & Remove Attachments
+[[cm-attachmentsDownloadRemove,{cm-attachments-download-remove}]]
+=== {cm-attachments-download-remove}
+
+1. To download or remove attachments of a client, open the *Attachments* tab
+2. Navigate to the attachment. If required the attachments can be sorted by clicking on the column header.
++
+image::Client_FacilityManagement/3400_AttachmentsDownRem.png[{width75},align=center]
++
+3. Press the button in columns *Download* or *Remove* to perform the download or remove the attachment. It depends on the configuration of the web browser if the file
+
+[WARNING]
+====
+* There is no approval when deleting files and the removal cannot be undone
+====
+
+== Print Client
+CRMP allows to download the client details  as a PDF. The PDF shows the same information as shown in the web. 
+
+image::Client_FacilityManagement/3500_Print.png[{width75},align=center]
+
+Included sections are:
+
+* *Additional Client Details*: All available information and comments
+* *Financial Statement*: Used template, number of collected statements
+* *PD Rating*
+* *Groups*
+* *Attachments*
+* *Activity History*: Information about the history of the client and general system information

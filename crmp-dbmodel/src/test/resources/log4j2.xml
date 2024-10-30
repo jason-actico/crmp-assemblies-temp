@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration packages="de.innovations.wicket.components.log.UserNamePatternConverter">
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="WORKPLACE-WEBAPP %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c - %U %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="java.sql" level="warn"/>
+        <Logger name="BatchDefinitionModel" level="warn"/>
+        <Logger name="de.innovations.mp" level="warn"/>
+        <Logger name="org.apache.wicket.util.resource.locator.ResourceStreamLocator" level="warn"/>
+        <Logger name="org.apache.wicket" level="warn"/>
+        <Logger name="org.apache" level="warn"/>
+        <Logger name="org.perf4j.TimingLogger" level="warn"/>
+        <Logger name="org.springframework.security.config.FilterChainProxyPostProcessor" level="warn"/>
+        <!-- Spring Logging for used application context, bean overriding and used properties -->
+        <Logger name="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" level="info"/>
+        <Logger name="org.springframework.beans.factory.support.DefaultListableBeanFactory" level="info"/>
+        <Logger name="org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer" level="info"/>
+
+        <Logger name="org.springframework" level="warn"/>
+
+        <Logger name="org.eclipse.birt.report" level="info">
+
+
+        <!-- Is required because BIRT does not cascade logging -->
+        <AppenderRef ref="STDOUT"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>

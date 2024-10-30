@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.actico.crmp</groupId>
+		<artifactId>crmp-assemblies</artifactId>
+		<version>9.2.0-R01-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>crmp-libraries</artifactId>
+	<packaging>pom</packaging>
+
+	<properties>
+		
+		<cli>${project.basedir}/target/cli/cli.jar</cli>
+    	<cli.version>9.1.9</cli.version>
+    	<cli.license-directory>${user.home}/.actico/license</cli.license-directory>
+	
+		<distro-dir>${project.build.directory}/archive-distro</distro-dir>
+		
+	</properties>
+
+	<!-- Dependencies only needed for Maven reactor ordering -->
+	<dependencies>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+	          	<artifactId>maven-compiler-plugin</artifactId>
+	          	<configuration>
+	            	<source>1.8</source>
+	            	<target>1.8</target>
+	          	</configuration>
+	        </plugin>
+	        <!-- Download CLI -->
+	        <plugin>
+	        	<groupId>org.apache.maven.plugins</groupId>
+	          	<artifactId>maven-dependency-plugin</artifactId>
+	          	<executions>
+	            	<execution>
+	              		<id>download-cli</id>
+	             		<phase>generate-resources</phase>
+	              		<goals>
+	                		<goal>copy</goal>
+	              		</goals>
+	              		<configuration>
+	                		<artifactItems>
+	                  			<artifactItem>
+	                    			<groupId>com.actico.cli</groupId>
+	                    			<artifactId>cli</artifactId>
+	                    			<version>${cli.version}</version>
+	                    			<outputDirectory>${project.basedir}/target/cli</outputDirectory>
+	                    			<destFileName>cli.jar</destFileName>
+	                  			</artifactItem>
+	                		</artifactItems>
+	              		</configuration>
+	            	</execution>
+	          	</executions>
+	        </plugin>
+	        <!-- Determine effective settings -->
+        	<plugin>
+          		<groupId>org.codehaus.gmaven</groupId>
+          		<artifactId>groovy-maven-plugin</artifactId>
+          		<version>2.1.1</version>
+          		<executions>
+            		<execution>
+	              		<phase>generate-resources</phase>
+	              		<goals>
+	                		<goal>execute</goal>
+	              		</goals>
+	              		<configuration>
+	                		<source>
+			                  import java.io.StringWriter;
+			                  import org.apache.maven.settings.io.xpp3.SettingsXpp3Writer;
+			
+			                  StringWriter writer = new StringWriter();
+			                  SettingsXpp3Writer settingsWriter = new SettingsXpp3Writer();
+			                  settingsWriter.write(writer, settings);
+			
+			                  // convert effective settings to a base64 encoded string
+			                  // and store it in the maven property 'effective_settings'
+			                  String s = Base64.getEncoder().encodeToString(writer.toString().getBytes("UTF-8"))
+			                  project.properties.effective_settings = s;
+	                		</source>
+              			</configuration>
+            		</execution>
+          		</executions>
+        	</plugin>
+        	<!-- Fetch maven libraries and add them to the local repository in order to create the Model Hub bundle -->
+    		<plugin>
+        		<artifactId>maven-antrun-plugin</artifactId>
+        		<version>1.8</version>
+        		<executions>
+		  			<execution>
+            			<id>add-maven-libraries-to-local-repository</id>
+            			<phase>generate-resources</phase>
+            			<goals>
+              				<goal>run</goal>
+            			</goals>
+            			<configuration>
+              				<target>
+                				<java jar="${cli}" fork="true" failonerror="true">
+                  					<arg line="--license-directory ${cli.license-directory}"/>
+                  					<arg value="add-maven-libraries"/>
+                  					<arg line="--repository ${project.build.directory}"/>
+                  					<arg line="--artifact com.actico.crmp:crmp-rule-dependencies:${project.version}"/>
+                  					<arg line="--maven-settings ${effective_settings}"/>
+                				</java>
+              				</target>
+            			</configuration>
+          			</execution>
+        		</executions>
+      		</plugin>
+      		<!-- Fetch maven artifacts and add them to the local repository in order to create the distribution bundle  -->
+			<plugin>
+				<groupId>com.actico.devop.maven</groupId>
+				<artifactId>repo-builder-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<executions>
+					<execution>
+						<id>fetch-runtimes</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>fetch-artifacts</goal>
+						</goals>
+						<configuration>
+							<artifactSets>
+								<artifactSet>
+									<outputDirectory>${distro-dir}</outputDirectory>
+									<fetchSources>false</fetchSources>
+									<generateDeployScript>true</generateDeployScript>
+									<flatLayout>false</flatLayout>
+									<scope>compile</scope>
+									<fileFilter>
+										 <excludes>
+											<!-- CRMP-632: exclude jqwidgets due to licensing constraints -->
+											<exclude>com/actico/workplace/webjar/jqwidgets-subset/**</exclude>
+										 </excludes>
+									</fileFilter>	
+									<artifacts>
+										<artifact>
+											<groupId>com.actico.crmp</groupId>
+											<artifactId>crmp-rule-dependencies</artifactId>
+											<version>${project.version}</version>
+											<fetchSource>false</fetchSource>
+										</artifact>
+									</artifacts>								
+								</artifactSet>
+							</artifactSets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Create Maven and Model Hub bundle -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>distro-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/model-hub-assembly.xml</descriptor>
+								<descriptor>src/main/assembly/maven-assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

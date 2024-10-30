@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>crmp-release-assembly</artifactId>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>com.actico.crmp</groupId>
+		<artifactId>crmp-assemblies</artifactId>
+		<version>9.2.0-R01-SNAPSHOT</version>
+	</parent>
+  <profiles>
+    <profile>
+      <id>release-assembly</id>
+	 <activation>
+			<activeByDefault>true</activeByDefault>
+	 </activation>
+	
+	
+	<dependencies>	
+		<!-- Dependencies required for the release assembly (e.g. workplace / spr documentation) 
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-dependencies</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>-->
+		
+		
+		<!-- CRMP db model (does only contain the util but not the db scripts as they are automatically installed with Liquibase) -->
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-dbmodel</artifactId>
+			<classifier>util</classifier>
+			<type>zip</type>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- CRMP documentation and CRMP OSM (as this is bundled to the documentation as well) 
+		<dependency>
+			<groupId>com.actico.crmp.documentation</groupId>
+			<artifactId>crmp-documentation</artifactId>
+			<classifier>Internal</classifier>
+			<type>docx</type>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.actico.crmp.documentation</groupId>
+			<artifactId>crmp-user-guide</artifactId>
+			<type>pdf</type>
+			<version>${project.version}</version>
+		</dependency>-->
+		
+		
+		<!-- CRMP librariests -->
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-libraries</artifactId>
+			<version>${project.version}</version>
+			<classifier>maven</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-libraries</artifactId>
+			<classifier>model-hub</classifier>
+			<type>zip</type>
+		</dependency>
+		
+		<!-- CRMP rule models -->
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-rule-module-build</artifactId>
+			<version>${crmp-rulemodels.version}</version>
+			<classifier>core-model-release</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-rule-module-build</artifactId>
+			<version>${crmp-rulemodels.version}</version>
+			<classifier>resources-model-release</classifier>
+			<type>zip</type>
+		</dependency>
+		
+		<!-- CRMP rule model sources -->
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-rule-module-build</artifactId>
+			<version>${crmp-rulemodels.version}</version>
+			<classifier>core-model-sources</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-rule-module-build</artifactId>
+			<version>${crmp-rulemodels.version}</version>
+			<classifier>resources-model-sources</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-rule-module-build</artifactId>
+			<version>${crmp-rulemodels.version}</version>
+			<classifier>integrationtest-model-sources</classifier>
+			<type>zip</type>
+		</dependency>
+
+		<!-- CRMP specification -->
+		<dependency>
+			<groupId>com.actico.crmp</groupId>
+			<artifactId>crmp-specification</artifactId>
+			<classifier>assembly</classifier>
+			<type>zip</type>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy-webapp</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/web application</outputDirectory>
+							<includeArtifactIds>crmp-solution-webapp</includeArtifactIds>                            
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-batch-application</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/batch application</outputDirectory>
+							<includeArtifactIds>financial-spreading-platform-batch-application</includeArtifactIds>
+							<includeTypes>zip</includeTypes> <!-- Use 'jar' to use the self-executable-jar instead -->                            
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-dbmodel</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/db model</outputDirectory>
+							<includeArtifactIds>crmp-dbmodel</includeArtifactIds>
+							<includeTypes>zip</includeTypes>                     
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-crmp-documentation</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/documentation</outputDirectory>
+							<includeArtifactIds>crmp-user-guide,crmp-documentation,crmp-solution-osm,workplace-system-requirements,workplace-user-guide,workplace-upgrade-guide,workplace-release-notes,workplace-operations-guide,financial-spreading-documentation,financial-spreading-release-notes</includeArtifactIds>                            
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-maven-assembly-artifact</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/libraries</outputDirectory>
+							<includeArtifactIds>crmp-libraries</includeArtifactIds>                            
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-rulemodels</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/rulemodels</outputDirectory>                         
+							<includeArtifactIds>crmp-rule-module-build</includeArtifactIds>
+							<!-- Use 'core-model-release, resources-model-release' in case the resources module (containing the DB Model) should be part of the rule models assembly -->
+							<includeClassifiers>core-model-release</includeClassifiers>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-rulemodel-sources</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/rulemodel-sources</outputDirectory>
+							<includeArtifactIds>crmp-rule-module-build</includeArtifactIds>  
+							<includeClassifiers>core-model-sources, resources-model-sources, integrationtest-model-sources</includeClassifiers>                          
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-crmp-specification</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/master-assembly/specification</outputDirectory>
+							<includeArtifactIds>crmp-specification</includeArtifactIds>                            
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>		
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>distro-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	</profile>
+	</profiles>
+</project>

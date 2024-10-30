@@ -1,0 +1,17 @@
+== About this document
+This documentation describes the functionality provided by ACTICO Credit Risk Management Platform (CRMP) and provides a detailed description how end users interact with the system. 
+
+
+=== Content
+This document is structured in two sections:
+
+*     A functional overview of CRMP: Describing the overall business process, scope and modules of CRMP which can be licensed separately and adapted to meet specific requirements. 
+*     A guide per module, explaining functionality, customization capabilities and how to perform the desired actions in greater detail.
+
+[NOTE]
+====
+The documentation describes the behavior and configuration of the standard Credit Risk Management Platform. 
+Project specific adaptions not are not described in this guide.
+====
+
+include::core-common-documentation/about/conventions.adoc[]

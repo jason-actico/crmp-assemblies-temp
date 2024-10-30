@@ -1,0 +1,16 @@
+<assembly>
+    <id>util</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/util</directory>
+            <outputDirectory>/util</outputDirectory>
+            <includes>
+                <include>**</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>
+    </fileSets>
+</assembly>

@@ -1,0 +1,12 @@
+= User Guide: Version @project.version@
+
+include::core-common-documentation/config.adoc[]
+
+include::about.adoc[]
+
+include::functional-overview.adoc[]
+
+include::client-management.adoc[]
+
+include::financial-statement.adoc[]
+

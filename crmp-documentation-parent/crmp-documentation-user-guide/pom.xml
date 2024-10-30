@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>crmp-documentation-parent</artifactId>
+        <groupId>com.actico.crmp.documentation</groupId>
+        <version>9.2.0-R01-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>crmp-user-guide</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <version.docbook-xml>4.5</version.docbook-xml>
+        <asciidoctor.maven.plugin.version>1.5.7</asciidoctor.maven.plugin.version>
+        <asciidoctorj.diagram.version>1.5.4.1</asciidoctorj.diagram.version>
+        <documentation>documentation</documentation>
+        <docbook.titlepage.productname>ACTICO Credit Risk Management Platform</docbook.titlepage.productname>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>documentation-maven-plugin</artifactId>
+                <groupId>com.actico.devop.maven</groupId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>documentation</goal>
+                        </goals>
+                        <configuration>
+                            <asciidocDiagramDir>src/main/diagrams</asciidocDiagramDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.actico.devop.maven</groupId>
+                <artifactId>check-links-maven-plugin</artifactId>
+                <configuration>
+                    <failOnBrokenLinks>false</failOnBrokenLinks>
+                </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/documentation/output/docbook/index.pdf</file>
+									<type>pdf</type>
+							</artifact>
+						</artifacts>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>			
+        </plugins>
+    </build>
+
+</project>

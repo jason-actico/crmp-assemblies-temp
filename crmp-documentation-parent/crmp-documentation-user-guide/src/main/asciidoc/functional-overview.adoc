@@ -1,0 +1,66 @@
+:fullwidth: scaledwidth=100%
+:logowidth: width=0.7cm
+
+
+= Functional Overview
+
+The Credit Risk Management Platform (CRMP) is a robust and scalable software solution for credit risk management. The platform is used by banks, financial service providers and corporations for assessing and managing credit risks.
+Core features of the platform include *capturing and spreading financial statements* as well as a flexible framework for the **implementation of internal rating models**. Based on *internal risk ratings* and **externally sourced credit information**, the platform enables the implementation of **strategies for credit origination and automated decisioning**. A simulation environment allows users to analyze the effecs of changes to the underlying risk models and sustainably optimize the models.
+
+The following diagram depicts the main functional modules of the Credit Risk Management Platform:
+
+image::Overview/100_FunctionalOverview.png[align = center, {width75}]
+
+[cols=2, grid="none", frame="none"]
+|===
+a|image:Overview/200_LogoCLI.png[{logowidth}] **CLIENT & FACILITY DATA MANAGEMENT**
+
+* Integration with existing data sources for seamless synchronization of client, facility and collateral data
+* Management of client relationships, e.g. economic risk units, borrower units
+a|image:Overview/200_LogoSPR.png[{logowidth}] **FINANCIAL SPREADING**
+
+* Capture, spread and analyze financial statements
+* Automated import of statements
+* Trend and peer-group analysis
+* Supports different accounting standards
+a|image:Overview/200_LogoCRR.png[{logowidth}] **CREDIT RISK & RATING** 
+
+* Implement and execute internal and external rating models for risk assessment
+* Calculate any risk parameter (e.g. PD, LGD, EAD) for risk management (e.g. IRBA) and accounting (IFRS9) 
+a|image:Overview/200_LogoORI.png[{logowidth}] **CREDIT WORKFLOW & ORIGINATION**
+
+* Workflow-enabled processing and automated decisioning on credit applications
+* Flexible configuration of credit policies and underwriting processes
+a|image:Overview/200_LogoEWS.png[{logowidth}] **EARLY WARNING SYSTEM**
+
+* Establish multiple variations of early warning indicators
+* Monitor risk in order to generate early warning signals
+* Assess and process warning signals
+a|image:Overview/200_LogoCBG.png[{logowidth}] **CREDIT BUREAU GATEWAY**
+
+* Seamless connectivity with external data providers (e.g. credit bureaus)
+* Standard connectors to major credit bureaus
+* Monitoring of credit bureaus and transactions
+|===
+
+Based on the data generated out of the operational risk management functionalities, the following analytical capabilities are provided:
+
+[cols=2, grid="none", frame="none"]
+|===
+a|image:Overview/200_LogoREP.png[{logowidth}] **REPORTING**
+
+* Create and configure standard and ad hoc reports
+* Aggregate data and analyze credit risk at the portfolio level
+a|image:Overview/200_LogoSIM.png[{logowidth}] **MODEL SIMULATION**
+
+* Adapt rating models and process flows
+* Simulate modified models against a historical database
+* Analyze the impact of model adjustments
+a|image:Overview/200_LogoSTR.png[{logowidth}] **STRESS TESTING**
+
+* Create scenario simulations of stress tests
+* Execute stress tests against historical data sets
+* Analyze the impact of a stress scenario on a credit portfolio level (e.g. transition matrix)
+a|
+|===
+

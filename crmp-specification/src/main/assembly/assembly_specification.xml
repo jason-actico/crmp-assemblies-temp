@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+	<id>assembly</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/resources</directory>
+			<outputDirectory>./</outputDirectory>
+			<includes>
+				<include>business-requirements/*</include>
+				<include>test-requirements/*</include>
+				<include>gui-specification/*</include>
+				<include>interface-specification/*</include>
+				<include>report-specification/*</include>
+				<include>technical-design/*.pdf</include>
+				<include>technical-design/*.docx</include>
+			</includes>
+			<excludes>
+				<exclude>%regex[.*\~\$.*\.(xlsx|docx)]</exclude> <!-- ignore temporary Office files -->
+				<exclude>technical-design/*.eap</exclude>
+				<exclude>technical-design/readme.txt</exclude>
+			</excludes>
+			<fileMode>755</fileMode>
+		</fileSet>
+	</fileSets>
+</assembly>
