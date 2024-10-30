@@ -4,7 +4,7 @@
 
 	<groupId>com.actico.crmp</groupId>
 	<artifactId>crmp-assemblies</artifactId>
-	<version>9.2.0-R01-SNAPSHOT</version>
+	<version>9.2.2-R02-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>

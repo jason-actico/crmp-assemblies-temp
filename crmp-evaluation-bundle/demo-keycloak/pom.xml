@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.actico.financial-spreading</groupId>
+        <artifactId>financial-spreading-evaluation-bundle-parent</artifactId>
+        <version>9.2.2-R02-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>financial-spreading-demo-keycloak</artifactId>
+
+    <properties>
+        <formatted-timestamp>${maven.build.timestamp}</formatted-timestamp>
+        <maven.build.timestamp.format>yyyy-MMM-dd</maven.build.timestamp.format>
+
+        <!-- https://www.keycloak.org/getting-started/getting-started-docker -->
+        <keycloak-image>quay.io/keycloak/keycloak:${keycloak-version}</keycloak-image>
+
+        <APPLICATION_SERVER>http://localhost:8080</APPLICATION_SERVER>
+        <CLIENT_ID>actico-model-hub</CLIENT_ID>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>  
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${version.maven-antrun-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>initialize-demo-keycloak</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="docker" failonerror="false" logError="false">
+                                    <!-- stop if still running for any reason -->
+                                    <arg line="stop demo-keycloak"/>
+                                </exec>
+
+                                <!-- https://www.keycloak.org/server/containers mentions it to be -hostname-port-->
+                                <exec executable="docker">
+                                    <arg line="run -p 8614:8614 -d --rm --name demo-keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin ${keycloak-image} start-dev --http-port=8614"/>
+                                </exec>
+
+                                <echo message="Waiting for keycloak '${keycloak-image}' to be started." level="info"/>
+                                <waitfor maxwait="5" maxwaitunit="minute" checkevery="500">
+                                    <http url="http://localhost:8614"/>
+                                </waitfor>
+
+                                <exec executable="docker">
+                                    <arg line="cp ${project.build.directory}/import-json-helper/actico/ demo-keycloak:/"/>
+                                </exec>
+
+                                <exec executable="docker">
+                                    <arg line="exec demo-keycloak /bin/bash /actico/demo-setup.sh" />
+                                </exec>
+
+                                <exec executable="docker">
+                                    <arg line="cp demo-keycloak:/opt/keycloak/actico-export/ ${project.build.directory}/actico-export "/>
+                                </exec>
+
+                                <exec executable="docker">
+                                     <arg line="stop demo-keycloak" />
+                                 </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>true</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>keycloak-local-assembly.xml</descriptor>
+                                <descriptor>keycloak-docker-assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
